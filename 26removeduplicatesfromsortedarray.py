@@ -1,18 +1,23 @@
+#https://leetcode.com/problems/remove-duplicates-from-sorted-array
+
 from typing import List
 
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        len_num = len(nums)
-        prev = -1000
-        count_remove = 0
-        for i in range(0, len_num):    
-            if prev == nums[i - count_remove]:
-                nums.pop(i - count_remove)
-                count_remove += 1
-            else:
-                prev = nums[i - count_remove]
-        return len_num - count_remove
+        length = len(nums)
+        removed = 0
+        i = 0
+        while i < len(nums) - 1:
 
+            if nums[i] == nums[i+1]:
+                nums.pop(i+1)
+                removed += 1
+            else:
+                i += 1
+
+        return length - removed
+
+        
 s = Solution()
 
 

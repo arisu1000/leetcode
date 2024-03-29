@@ -45,3 +45,28 @@ print(s.maxProfit([7,1,5,3,6,4]))
 print(s.maxProfit([1,2,3,4,5]))
 print(s.maxProfit([7,6,4,3,1]))
 print(s.maxProfit([2,6,8,7,8,7,9,4,1,2,4,5,8]))
+
+
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         length = len(prices)
+        
+#         TotalProfit = 0
+#         left = 0
+#         right = 1
+#         while right<length:
+#             if prices[right] < prices[left]:
+#                 left += 1
+#                 right += 1
+#                 continue
+
+#             profit = prices[right] - prices[left]
+#             if profit >= 0:
+#                 TotalProfit += profit
+#                 left = right
+
+#             right += 1
+
+        
+#         return TotalProfit
+

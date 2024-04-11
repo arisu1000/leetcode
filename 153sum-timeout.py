@@ -9,7 +9,7 @@ class Solution:
         nums.sort()
         left = 0
         right = len(nums) - 1
-        ans = []
+        ans = set()
         i = 0
         while i < len(nums) - 2:
 
@@ -24,15 +24,17 @@ class Solution:
                 elif sum < 0:
                     center += 1
                 else:
-                    find = [nums[left], nums[center], nums[right]]
-                    exist = False
-                    for a in ans:
-                        if a == find:
-                            exist = True
-                            break
+                    # find = [nums[left], nums[center], nums[right]]
+                    # exist = False
+                    # for a in ans:
+                    #     if a == find:
+                    #         exist = True
+                    #         break
 
-                    if exist == False:
-                        ans.append(find)
+                    # if exist == False:
+                    #     ans.append(find)
+
+                    ans.add((nums[left], nums[center], nums[right]))
 
                     center += 1
                     right -= 1

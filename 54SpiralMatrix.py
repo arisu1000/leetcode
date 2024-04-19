@@ -1,38 +1,65 @@
+#https://leetcode.com/problems/spiral-matrix
+
+
 from typing import List
 
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
-        m, n = len(matrix), len(matrix[0])
-        row_start, row_end = 0, m - 1
-        col_start, col_end = 0, n - 1
-        spiral = []
+        ans = []
 
-        while row_start <= row_end and col_start <= col_end:
-            # Traverse top row
-            for col in range(col_start, col_end + 1):
-                spiral.append(matrix[row_start][col])
-            row_start += 1
+        if len(matrix) == 0:
+            return ans
+        
+        RightLimit = len(matrix[0]) - 1
+        LeftLimit = 0
+        DownLimit = len(matrix) - 1
+        UpLimit = 0
 
-            # Traverse right column
-            for row in range(row_start, row_end + 1):
-                spiral.append(matrix[row][col_end])
-            col_end -= 1
+        r=0
+        c=0
+        toRight = True
+        toLeft = False
+        toDown = False
+        toUp = False
 
-            if row_start <= row_end:
-                # Traverse bottom row
-                for col in range(col_end, col_start - 1, -1):
-                    spiral.append(matrix[row_end][col])
-                row_end -= 1
+        while LeftLimit <= RightLimit and UpLimit <= DownLimit:
+                ans.append(matrix[r][c])
+                if toRight == True:
+                    if RightLimit > c:
+                        c += 1
+                    else:
+                        toRight = False
+                        toDown = True
+                        UpLimit += 1
+                        r += 1
+                elif toLeft == True:
+                    if LeftLimit < c:
+                        c -= 1
+                    else:
+                        toLeft = False
+                        toUp = True
+                        DownLimit -= 1
+                        r -= 1
+                elif toDown == True:
+                    if DownLimit > r :
+                        r += 1
+                    else:
+                        toDown = False
+                        toLeft = True
+                        RightLimit -= 1
+                        c -= 1
+                elif toUp == True:
+                    if UpLimit < r:
+                        r -= 1
+                    else:
+                        toUp = False
+                        toRight = True
+                        LeftLimit += 1
+                        c += 1
 
-            if col_start <= col_end:
-                # Traverse left column
-                for row in range(row_end, row_start - 1, -1):
-                    spiral.append(matrix[row][col_start])
-                col_start += 1
-
-        return spiral
+        return ans
     
 s = Solution()
 
-# print(s.spiralOrder([[1,2,3],[4,5,6],[7,8,9]]))
-print(s.spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]))
+print(s.spiralOrder([[1,2,3],[4,5,6],[7,8,9]]), [1,2,3,6,9,8,7,4,5])
+print(s.spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12]]), [1,2,3,4,8,12,11,10,9,5,6,7])

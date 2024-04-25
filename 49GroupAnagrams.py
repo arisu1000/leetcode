@@ -1,29 +1,29 @@
+#https://leetcode.com/problems/group-anagrams
+
 from typing import List
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
 
-        n = len(strs)
-        
-        store = {}
-        for i in range(n):
+        ans = {}
+        for str in strs:
+            key = ''.join(sorted(str))
+
             try:
-                store[''.join(sorted(strs[i]))].append(i)
+                ans[key].append(str)
             except KeyError:
-                store[''.join(sorted(strs[i]))] = [i]
-        
-        # print(store)
+                ans[key] = []
+                ans[key].append(str)
+                
         result = []
-        for key, value in store.items():
-            tmp_result = []
-            for i in value:
-                tmp_result.append(strs[i])
-            
-            result.append(tmp_result)
+        for key, value in ans.items():
+            result.append(value)
 
         return result
 
 
-
 s = Solution()
 print(s.groupAnagrams(["eat","tea","tan","ate","nat","bat"]))
+print(s.groupAnagrams([""]))
+print(s.groupAnagrams(["a"]))
+print(s.groupAnagrams(["",""]), [["",""]])

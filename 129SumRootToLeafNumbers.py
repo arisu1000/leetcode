@@ -41,12 +41,13 @@ class Solution:
             return 0
         
         pathNumberStr = ""
+        totalsum = 0
 
-        result = []
         def makePathNumber(current: Optional[TreeNode], pathNumberStr: str) -> str:
+            nonlocal totalsum
             if current.left is None and current.right is None:
                 pathNumberStr += str(current.val)
-                result.append(pathNumberStr)
+                totalsum += int(pathNumberStr)
 
             if current.left is not None:
                 makePathNumber(current.left, pathNumberStr + str(current.val))
@@ -56,11 +57,7 @@ class Solution:
 
         makePathNumber(root, pathNumberStr)
 
-        sum = 0
-        for r in result:
-            sum += int(r)
-
-        return sum
+        return totalsum
 
 s = Solution()
 print(s.sumNumbers(build_tree([1,2,3])), 25)        

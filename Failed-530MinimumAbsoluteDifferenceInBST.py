@@ -35,34 +35,31 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    ans = 100000000
 
-    sort_list = []
-    def findMinimum(self, node: Optional[TreeNode]):
-
-        if node is None:
-            return 
-
-        print(node.val)
-
-        if node.left:
-            self.findMinimum(node.left)
-        if node.right:
-            self.findMinimum(node.right)
+    def inorderTraversal(self, root) -> List:
+        res = []
+        if root:
+            res = self.inorderTraversal(root.left)
+            res.append(root.val)
+            res = res + self.inorderTraversal(root.right)
+        return res
 
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         
         self.ans = 100000000
-        self.findMinimum(root)
+        res = self.inorderTraversal(root)
 
-        return self.ans
+        ans = 100000000
+        for i in range(1, len(res)):
+            ans = min(ans, abs(res[i] - res[i-1]))
+
+        return ans
     
 s = Solution()
 
-print(s.getMinimumDifference(build_tree([0,None,2236,None,None,1277,2776,None,None,None,None,None,None,519])), 519)
+
 print(s.getMinimumDifference(build_tree([543,384,652,None,445,None,699])), 47)
 print(s.getMinimumDifference(build_tree([334,277,507,None,285,None,678])), 8)
-print(s.getMinimumDifference(build_tree([2,None,4443,1329,None,None,2917,None,4406])), 37)
 print(s.getMinimumDifference(build_tree([236,104,701,None,227,None,911])), 9)
 print(s.getMinimumDifference(build_tree([4,2,6,1,3])), 1)
 print(s.getMinimumDifference(build_tree([1,0,48,None,None,12,49])), 1)

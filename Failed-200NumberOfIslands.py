@@ -4,61 +4,40 @@ from typing import List
 
 class Solution:
 
-    islands = []
+    grid = []
+    visted = set()
+    ans = 0
 
-    def checkNewIsland(self, i,j) -> bool:
-        for a in range(len(self.islands)):
-            if self.isConnect(i,j,self.islands[a]):
-                self.islands[a].append([i,j])
-                return False 
+    def dfs(self, i,j):
+        if i < 0 or j < 0 or i >= len(self.grid) or j >= len(self.grid[0]) or self.grid[i][j] != '1':
+            return
 
-        self.islands.append([[i,j]])
-        return True
-
-    def isConnect(self, i,j, island) -> bool:
-        if [i + 1, j] in island or [i, j + 1] in island:
-            return True
-        return False
-
-    def checkConnectIsland(self) -> bool:
-        for a in range(len(self.islands)):
-            for i in range(len(self.islands[a])):
-                for b in range(a+1, len(self.islands)):
-                    if self.isConnect(self.islands[a][i][0], self.islands[a][i][1], self.islands[b]):
-                        self.islands[a] = self.islands[a] + self.islands[b]
-                        self.islands.remove(self.islands[b])
-                        return True
+        if (i,j) in self.visted:
+            return 
         
-        return False
+        self.visted.add((i,j))
+        
+        self.dfs(i, j-1)
+        self.dfs(i, j+1)
+        self.dfs(i-1, j)
+        self.dfs(i+1, j)
 
 
     def numIslands(self, grid: List[List[str]]) -> int:
-        #현재까지의 섬을 저장해둠
-        #그 섬과 같은 섬인지 확인
-        #다른 섬이면 새로운 섬을 추가
+        self.ans = 0
+        self.visted = set()
+        self.grid = grid
 
-        self.islands = []
-
-        for i in range(len(grid)):
-            for j in range(len(grid[i])):
-                if grid[i][j] == "1":
-                    if grid[i-1][j] == "1" or grid[i][j-1] == "1":
-                        try:
-                            self.islands[-1].append([i,j])
-                        except IndexError:
-                            self.checkNewIsland(i,j)
-                            continue
-                    else:
-                        self.checkNewIsland(i,j)
-                    
-                        
+        if not grid:
+            return 0
         
-        isConnected = True
-        while isConnected:
-            isConnected = self.checkConnectIsland()
-
-        # print(self.islands)
-        return len(self.islands)
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == '1' and (i,j) not in self.visted:
+                    self.dfs(i,j)
+                    self.ans += 1
+        
+        return self.ans
     
 
 s = Solution()

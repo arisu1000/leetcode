@@ -1,55 +1,43 @@
 #https://leetcode.com/problems/evaluate-division
 
+#chatgpt 솔루션
+
 from typing import List
+from collections import defaultdict, deque
 
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        graph = defaultdict(dict)
 
-        #방정식을 풀어서 나눗셈을 해결해야 하나?
-        known_variables=set()
-        calculated = {}
-        for i, equation in enumerate(equations):
-            for var in equation:
-                for c in var:
-                    known_variables.add(c)
+        for (a, b), value in zip(equations, values):
+            graph[a][b] = value
+            graph[b][a] = 1/value
+
+        def bfs(start, end):
+            if start not in graph or end not in graph:
+                return -1.0
             
-            calculated[f"{equation[0]}/{equation[1]}"] = values[i]
+            queue = deque([(start, 1.0)])
+            visited=set()
+            while queue:
+                current, product = queue.popleft()
+                if current == end:
+                    return product
+                visited.add(current)
+                for neighbor, value in graph[current].items():
+                    if neighbor not in visited:
+                        queue.append((neighbor, product*value))
+            
+            return -1.0
         
+        results=[]
+        for a, b in queries:
+            results.append(bfs(a,b))
 
-        ans = []
-        for query in queries:
-            unknown_variable = False
-            for var in query:
-                for c in var:
-                    if c not in known_variables:
-                        unknown_variable = True
-            
-            if unknown_variable:
-                ans.append(-1.0)
-                continue
-            
-            if query[0] == query[1]:
-                ans.append(1.0)
-                continue
-            
-            equation = f"{query[0]}/{query[1]}"
+        return results
+       
 
-            try:
-                if calculated[equation]:
-                    ans.append(calculated[equation])
-                    continue
-            except KeyError:
-                first = ""
-                second = ""
-                    
-
-
-            ans.append(1.0)
-                
-
-
-
-        return ans
+       
     
 s = Solution()
 

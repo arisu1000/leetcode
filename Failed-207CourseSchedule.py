@@ -1,49 +1,35 @@
 #https://leetcode.com/problems/course-schedule
 
 from typing import List
+from collections import defaultdict, deque
 
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        if len(prerequisites) == 0:
-            return True
+        # 그래프를 초기화합니다.
+        graph = defaultdict(list)
+        in_degree = [0] * numCourses
 
-        matrix = []
-        for i in range(numCourses):
-            matrix.append([0 for j in range(numCourses)])
+        # 그래프를 구축하고 진입 차수를 계산합니다.
+        for dest, src in prerequisites:
+            graph[src].append(dest)
+            in_degree[dest] += 1
 
-        for prerequisit in prerequisites:
-            matrix[prerequisit[0]][prerequisit[1]] += 1
+        # 진입 차수가 0인 노드를 큐에 추가합니다.
+        queue = deque([i for i in range(numCourses) if in_degree[i] == 0])
+        visited = 0
+
+        # BFS를 통해 그래프를 탐색합니다.
+        while queue:
+            node = queue.popleft()
+            visited += 1
+            for neighbor in graph[node]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
         
-        count = 0
-        def check(i, j) -> bool:
-            nonlocal count
+        # 모든 노드를 방문할 수 있으면 순환이 없는 것입니다.
+        return visited == numCourses
 
-            if matrix[i][j] == 0:
-                if count <= numCourses:
-                    return True
-                else:
-                    return False
-            else:
-                count += 1
-                if count > numCourses:
-                    return False
-                else:
-                    check(j,i)
-                    if count <= numCourses:
-                        return True
-                    else:
-                        return False
-                   
-        result = False
-        for row in range(len(matrix)):
-            for col in range(len(matrix[row])):
-                if matrix[row][col] == 1:
-                    result = check(row,col)
-                    
-        if result == True and count <= numCourses:
-            return True
-        else:
-            return False
 
 s = Solution()
 print(s.canFinish(3, [[1,0],[0,2],[2,1]]), False)

@@ -1,12 +1,12 @@
+#https://leetcode.com/problems/permutations/description
+
 from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         result = []
 
-
         def findAll(nums, subResult, result):
-
             if len(subResult) == len(nums):
                 result.append(subResult[:])
                 return

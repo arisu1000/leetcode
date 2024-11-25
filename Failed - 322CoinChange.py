@@ -21,8 +21,8 @@ class Solution:
 s = Solution()
 
 
-print(s.coinChange([186,419,83,408], 6249), 20)
-print(s.coinChange([1], 2), 2)
 print(s.coinChange([1,2,5], 11), 3)
+print(s.coinChange([1], 2), 2)
+print(s.coinChange([186,419,83,408], 6249), 20)
 print(s.coinChange([2], 3), -1)
 print(s.coinChange([1], 0), 0)
